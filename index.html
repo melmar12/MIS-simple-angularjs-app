@@ -22,23 +22,34 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  <body>
+  <body ng-app="notesApp">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <h1>Simple jQuery App</h1>
+          <h1>{{ pageTitle}}</h1>
+          <input type="text" placeholder="Page Title" class="form-control" ng-model="pageTitle" ng-init="pageTitle='Simple Angular App'">
         </div>
       </div>
 
-      <div class="row notes">
+      <div class="row notes" ng-controller="NoteController as notes">
 
         <div class="col-xs-12">
           <h1>Notes</h1>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div id="addDefaultNote" class="btn btn-lg btn-default">Add Note</div>
             <div id="addFamousQuote" class="btn btn-lg btn-default">Add Famous Note</div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Title" ng-model="notes.formnote.title">
+              <textarea class="form-control" placeholder="Note" ng-model="notes.formnote.content"></textarea>
+            </div>
+            <button ng-click="notes.addNote()">Submit</button>
+          </div>
         </div>
 
         <div class="col-xs-12">
@@ -46,6 +57,11 @@
             <div class="note-item col-md-3">
               <h3>This is a Note</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus eveniet, deserunt suscipit incidunt, ea magnam? Animi sequi temporibus at debitis, voluptatum delectus quibusdam officia, illum est officiis voluptatem, ullam nesciunt.</p>
+            </div>
+
+            <div ng-repeat='note in notes.all| orderBy:"-"' class="note-item col-md-3">
+              <h3>{{ note.title }}</h3>
+              <p>{{ note.content }}</p>
             </div>
           </div>
 

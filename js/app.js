@@ -15,7 +15,7 @@ printNote(defaultNote);
 
 var appendNote = function(note) {
   var noteContainer = '.note-items';
-  $(noteContainer).append("<div class='note-item col-md-3'><h3>" + note.title + "</h3><p>" + note.content + "</p></div>");
+  $(noteContainer).prepend("<div class='note-item col-md-3'><h3>" + note.title + "</h3><p>" + note.content + "</p></div>");
 }
 var addNote = function(note) {
   appendNote(note);
@@ -31,12 +31,48 @@ var addFamousNote = function() {
 
   })
 }
+
+var updateNoteCount = function() {
+  $('.notes div:first-child h1').eq(0).text("Notes: " + $('.note-item').length);
+}
+
 addNote(defaultNote);
 
 $('#addDefaultNote').click(function(e) {
     addNote(defaultNote);
+    updateNoteCount();
 });
 
 $('#addFamousQuote').click(function(e) {
   addFamousNote();
+  updateNoteCount();
 })
+
+
+// Simple Angular App
+
+// Define Angular App
+var notesApp = angular.module('notesApp', []);
+
+notesApp.controller('NoteController', function NoteController($scope) {
+  var vm = this;
+  vm.all = [
+    {
+      title: "Angular Default Note",
+      content: "This is a note that was defined within our js/app.js javascript file."
+    }
+  ];
+
+  vm.addNote = function() {
+    vm.all.push({ title: vm.formnote.title , content: vm.formnote.content });
+    vm.resetNote();
+  }
+
+  vm.resetNote = function() {
+    vm.formnote.title = "";
+    vm.formnote.content = "";
+  }
+
+  console.log("Angular is working, Sanity Check");
+
+});
