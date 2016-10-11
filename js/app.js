@@ -22,15 +22,45 @@ var addNote = function(note) {
 }
 
 
-var addFamousNote = function() {
-  $.getJSON('https://wisdomapi.herokuapp.com/v1/random?callback=?',function(data) {
-    console.log(data);
 
-    var note = new Note(data.author.name, data.content);
-    addNote(note);
+// cool thing
+var appendThing = function (name, url, gender) {
+  var thingContainer = '.note-items';
+  var suffix = "";
 
+  if (gender === "male") {
+    suffix = "Mr "
+  } else {
+    suffix = "Lil "
+  }
+  $(thingContainer).prepend("<div class='note-item col-md-3'><h3>This is " + suffix + name + "</h3><img src='" + url + "' class='randoGif'></div>");
+}
+var aThing = function () {
+  $.getJSON('http://uinames.com/api/', function (data) {
+    var nameObj = data;
+    return nameObj
+  }).then(function (nameObj) {
+    $.getJSON('http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=cat', function (data) {
+      var giphyObj = data.data;
+
+      console.log(giphyObj);
+      console.log(nameObj);
+
+      appendThing(nameObj.name, giphyObj.image_url, nameObj.gender);
+    })
   })
 }
+
+// var addFamousNote = function() {
+//   $.getJSON('https://wisdomapi.herokuapp.com/v1/random?callback=?',function(data) {
+//     console.log(data);
+
+//     var note = new Note(data.author.name, data.content);
+//     addNote(note);
+
+//   })
+// }
+
 
 var updateNoteCount = function() {
   $('.notes div:first-child h1').eq(0).text("Notes: " + $('.note-item').length);
@@ -44,7 +74,8 @@ $('#addDefaultNote').click(function(e) {
 });
 
 $('#addFamousQuote').click(function(e) {
-  addFamousNote();
+  aThing();
+  // addFamousNote();
   updateNoteCount();
 })
 
