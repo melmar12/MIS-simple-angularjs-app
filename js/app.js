@@ -23,9 +23,8 @@ var addNote = function(note) {
 
 
 
-// cool thing
+// cool thing - meow
 var appendThing = function (name, url, gender) {
-  var thingContainer = '.note-items';
   var suffix = "";
 
   if (gender === "male") {
@@ -33,8 +32,10 @@ var appendThing = function (name, url, gender) {
   } else {
     suffix = "Lil "
   }
-  $(thingContainer).prepend("<div class='note-item col-md-3'><h3>This is " + suffix + name + "</h3><img src='" + url + "' class='randoGif'></div>");
+
+  $('.note-items').prepend("<div class='note-item col-md-3'><h3>This is " + suffix + name + "</h3><img src='" + url + "' class='randoGif'></div>");
 }
+
 var aThing = function () {
   $.getJSON('http://uinames.com/api/', function (data) {
     var nameObj = data;
@@ -51,6 +52,21 @@ var aThing = function () {
   })
 }
 
+var appendGif = function (url) {
+  $('.note-items').prepend("<div class='note-item col-md-3'><img src='" + url + "' class='randoGif'></div>");
+}
+
+var gifCategroy = function () {
+  var category = $('#gifCategroy').val();
+
+  $.getJSON('http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=' + category, function (data) {
+    var giphyObj = data.data;
+    appendGif(giphyObj.image_url);
+  });
+  
+  console.log("gif category: " + category);
+}
+
 // var addFamousNote = function() {
 //   $.getJSON('https://wisdomapi.herokuapp.com/v1/random?callback=?',function(data) {
 //     console.log(data);
@@ -60,6 +76,8 @@ var aThing = function () {
 
 //   })
 // }
+
+
 
 
 var updateNoteCount = function() {
@@ -77,7 +95,12 @@ $('#addFamousQuote').click(function(e) {
   aThing();
   // addFamousNote();
   updateNoteCount();
+});
+
+$('#addGif').click(function(e) {
+  gifCategroy();
 })
+
 
 
 // Simple Angular App
